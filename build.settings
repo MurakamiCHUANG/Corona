@@ -1,0 +1,16 @@
+-- build.settings for project: SaturnInvader
+-- used by the course : Learning English by Making Mobile Games -- Advanced
+-- Dr. Twobears ( Chi-Hsiung Liang)
+-- build.settings
+--自定為橫向的畫面，並支援橫向左與右
+settings =
+{
+	orientation =
+	{
+
+		default = "landscapeRight",
+		supported = { "landscapeLeft", "landscapeRight" }
+	},
+
+}
+
