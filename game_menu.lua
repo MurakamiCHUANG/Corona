@@ -47,7 +47,12 @@ local tPrevious = system.getTimer()
 -- 這里以下才是場景開始時要出現的畫面
 -- -----------------------------------------------------------------------------------
 function scene:create( event )
+
  
+ sounds = {
+  menu = audio.loadSound("menu.mp3"),
+  }
+
     local sceneGroup = self.view
     -- Code here runs when the scene is first created but has not yet appeared on screen
     local bg = display.newImageRect( "background_Green_480x320.png", 480, 320 )
@@ -177,6 +182,10 @@ local function menuTouch(event)
     print("touch_"..event.target.name)
     if event.target.name == "play" then
       --追加下列這行會在點擊play後,將play移走然後呼叫換場景的功能
+      audio.play( sounds.start,{channel=2,onComplete = function() 
+                                      audio.dispose( sounds.start ) 
+                                      sounds.start=nil
+                                      end})
       transition.to(menu,  {time = 400, x = 480+event.target.contentWidth/2,onComplete = changeScene})
       print("play pressed")
     else
@@ -212,6 +221,11 @@ function scene:show( event )
     elseif ( phase == "did" ) then
 
         -- Code here runs when the scene is entirely on screen
+
+        composer.removeScene("game") --移除上個場景
+        print("menu")
+        
+        audio.play( sounds.menu, { channel=1, loops=-1})
  
     end
 end
@@ -225,6 +239,12 @@ function scene:hide( event )
  
     if ( phase == "will" ) then
         -- Code here runs when the scene is on screen (but is about to go off screen)
+
+         audio.stop(1)
+
+        audio.dispose( sounds.menu )
+        sounds.menu = nil
+
         Runtime:removeEventListener( "enterFrame", move )
     elseif ( phase == "did" ) then
         -- Code here runs immediately after the scene goes entirely off screen
@@ -238,6 +258,7 @@ function scene:destroy( event )
  
     local sceneGroup = self.view
     -- Code here runs prior to the removal of scene's view
+
     print("destroy_menu")
 end
  
